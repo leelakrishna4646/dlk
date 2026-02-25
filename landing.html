@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | CloudShare</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:linear-gradient(135deg,#f4e9ff,#e8f1ff);color:#111827;min-height:100vh;}
+
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:#f1f5f9;}
+::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:#94a3b8;}
+
+/* Header Navigation */
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:rgba(255,255,255,0.8);
+backdrop-filter:blur(10px);
+border-bottom:1px solid rgba(225,229,234,0.4);
+box-shadow:0 2px 12px rgba(0,0,0,0.05);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.logo{font-size:22px;font-weight:800;background:linear-gradient(135deg,#7c3aed,#2563eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+.nav-right{display:flex;gap:30px;align-items:center;}
+
+.user-info{display:flex;gap:15px;align-items:center;}
+
+.user-avatar{
+width:45px;
+height:45px;
+border-radius:50%;
+background:linear-gradient(135deg,#7c3aed,#2563eb);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+font-size:18px;
+box-shadow:0 4px 15px rgba(124,58,237,0.3);
+}
+
+.user-name{font-weight:600;color:#111827;}
+
+.logout-btn{
+padding:10px 20px;
+background:#fee2e2;
+color:#dc2626;
+border:none;
+border-radius:10px;
+font-weight:600;
+cursor:pointer;
+transition:all 0.3s ease;
+}
+
+.logout-btn:hover{
+background:#fecaca;
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(220,38,38,0.2);
+}
+
+/* Main Container */
+.container{
+max-width:1400px;
+margin:0 auto;
+padding:40px 8%;
+}
+
+/* Welcome Section */
+.welcome-section{
+background:linear-gradient(135deg,#7c3aed 0%,#2563eb 100%);
+border-radius:25px;
+padding:50px;
+color:white;
+margin-bottom:50px;
+box-shadow:0 20px 60px rgba(124,58,237,0.25);
+position:relative;
+overflow:hidden;
+}
+
+.welcome-section::before{
+content:"";
+position:absolute;
+top:-50%;
+right:-10%;
+width:400px;
+height:400px;
+background:rgba(255,255,255,0.1);
+border-radius:50%;
+}
+
+.welcome-section::after{
+content:"";
+position:absolute;
+bottom:-30%;
+left:-5%;
+width:300px;
+height:300px;
+background:rgba(255,255,255,0.05);
+border-radius:50%;
+}
+
+.welcome-content{position:relative;z-index:2;}
+
+.welcome-title{
+font-size:48px;
+font-weight:800;
+margin-bottom:15px;
+letter-spacing:-1px;
+}
+
+.welcome-subtitle{
+font-size:18px;
+opacity:0.95;
+margin-bottom:25px;
+}
+
+.welcome-stats{
+display:flex;
+gap:40px;
+margin-top:35px;
+flex-wrap:wrap;
+}
+
+.stat{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.stat-value{
+font-size:32px;
+font-weight:800;
+}
+
+.stat-label{
+font-size:14px;
+opacity:0.85;
+text-transform:uppercase;
+letter-spacing:0.5px;
+}
+
+/* Features Grid */
+.features-section{margin-bottom:50px;}
+
+.section-title{
+font-size:32px;
+font-weight:800;
+margin-bottom:30px;
+color:#111827;
+}
+
+.features-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+}
+
+.feature-card{
+background:white;
+border-radius:20px;
+padding:35px;
+box-shadow:0 10px 40px rgba(0,0,0,0.08);
+transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+cursor:pointer;
+border:1px solid rgba(225,229,234,0.5);
+position:relative;
+overflow:hidden;
+}
+
+.feature-card::before{
+content:"";
+position:absolute;
+top:-50%;
+right:-50%;
+width:200px;
+height:200px;
+background:radial-gradient(circle,rgba(124,58,237,0.1) 0%,transparent 70%);
+border-radius:50%;
+transition:all 0.6s ease;
+}
+
+.feature-card:hover{
+transform:translateY(-8px);
+box-shadow:0 20px 60px rgba(124,58,237,0.15);
+}
+
+.feature-card:hover::before{
+width:400px;
+height:400px;
+top:-100%;
+right:-100%;
+}
+
+.feature-icon{
+font-size:45px;
+margin-bottom:15px;
+display:block;
+}
+
+.feature-card h3{
+font-size:22px;
+font-weight:700;
+margin-bottom:12px;
+color:#111827;
+position:relative;
+z-index:2;
+}
+
+.feature-card p{
+color:#6b7280;
+font-size:15px;
+line-height:1.6;
+margin-bottom:20px;
+position:relative;
+z-index:2;
+}
+
+.feature-card .btn-arrow{
+display:inline-flex;
+align-items:center;
+gap:8px;
+color:#7c3aed;
+font-weight:700;
+text-decoration:none;
+transition:all 0.3s ease;
+position:relative;
+z-index:2;
+}
+
+.feature-card .btn-arrow:hover{
+gap:12px;
+color:#2563eb;
+}
+
+/* Recent Activity */
+.activity-section{
+background:white;
+border-radius:20px;
+padding:35px;
+box-shadow:0 10px 40px rgba(0,0,0,0.08);
+border:1px solid rgba(225,229,234,0.5);
+}
+
+.activity-title{
+font-size:22px;
+font-weight:700;
+margin-bottom:25px;
+color:#111827;
+}
+
+.activity-list{
+display:flex;
+flex-direction:column;
+gap:20px;
+max-height:400px;
+overflow-y:auto;
+}
+
+.activity-item{
+display:flex;
+gap:15px;
+padding:15px;
+background:#f9fafb;
+border-radius:12px;
+border-left:4px solid #7c3aed;
+transition:all 0.3s ease;
+}
+
+.activity-item:hover{
+background:#f3f4f6;
+}
+
+.activity-icon{
+font-size:28px;
+min-width:40px;
+text-align:center;
+}
+
+.activity-content{flex:1;}
+
+.activity-title-item{
+font-weight:700;
+color:#111827;
+margin-bottom:4px;
+}
+
+.activity-time{
+font-size:13px;
+color:#9ca3af;
+}
+
+.activity-size{
+color:#6b7280;
+font-size:14px;
+}
+
+/* Empty State */
+.empty-state{
+text-align:center;
+padding:60px 20px;
+color:#6b7280;
+}
+
+.empty-icon{
+font-size:72px;
+margin-bottom:20px;
+}
+
+.empty-state h3{
+font-size:20px;
+font-weight:700;
+color:#111827;
+margin-bottom:10px;
+}
+
+.empty-state p{
+color:#9ca3af;
+margin-bottom:25px;
+}
+
+.empty-state .btn-primary{
+padding:12px 28px;
+background:linear-gradient(90deg,#7c3aed,#2563eb);
+color:white;
+border:none;
+border-radius:10px;
+font-weight:600;
+cursor:pointer;
+transition:all 0.3s ease;
+}
+
+.empty-state .btn-primary:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 30px rgba(124,58,237,0.3);
+}
+
+/* Grid Layout */
+.grid-2{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+margin-bottom:50px;
+}
+
+.info-card{
+background:white;
+border-radius:20px;
+padding:30px;
+box-shadow:0 10px 40px rgba(0,0,0,0.08);
+border:1px solid rgba(225,229,234,0.5);
+text-align:center;
+}
+
+.info-card h3{
+color:#6b7280;
+font-size:14px;
+font-weight:600;
+text-transform:uppercase;
+letter-spacing:0.5px;
+margin-bottom:10px;
+}
+
+.info-card .value{
+font-size:36px;
+font-weight:800;
+background:linear-gradient(135deg,#7c3aed,#2563eb);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+}
+
+/* Responsive */
+@media(max-width:768px){
+.welcome-title{font-size:32px;}
+.section-title{font-size:24px;}
+.features-grid{grid-template-columns:1fr;}
+.welcome-stats{gap:20px;}
+nav{padding:15px 5%;}
+.container{padding:25px 5%;}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">CloudShare</div>
+<div class="nav-right">
+<div class="user-info">
+<div class="user-avatar" id="userAvatar">U</div>
+<div class="user-name" id="userName">User</div>
+</div>
+<button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+</nav>
+
+<div class="container">
+
+<!-- Welcome Section -->
+<div class="welcome-section">
+<div class="welcome-content">
+<div class="welcome-title" id="welcomeTitle">Welcome back! 👋</div>
+<div class="welcome-subtitle">You're all set to share, convert, and compress files</div>
+<div class="welcome-stats">
+<div class="stat">
+<div class="stat-value" id="filesProcessed">0</div>
+<div class="stat-label">Files Processed</div>
+</div>
+<div class="stat">
+<div class="stat-value" id="storageUsed">0 MB</div>
+<div class="stat-label">Storage Used</div>
+</div>
+<div class="stat">
+<div class="stat-value" id="joinDate">Feb 2026</div>
+<div class="stat-label">Member Since</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Main Features Section with File Operations -->
+<div class="features-section" style="margin-top:50px;">
+<h2 class="section-title">All Features</h2>
+
+<!-- File Transfer Section -->
+<div style="margin-bottom:50px;">
+<div style="display:flex;gap:15px;align-items:center;margin-bottom:25px;">
+<span style="font-size:32px;">📤</span>
+<h3 style="font-size:24px;font-weight:700;color:#111827;margin:0;">File Transfer</h3>
+</div>
+<div class="transfer-container" style="background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:20px;padding:40px;color:white;min-height:300px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;">
+<div style="position:absolute;top:-50%;right:-10%;width:300px;height:300px;background:rgba(255,255,255,0.1);border-radius:50%;"></div>
+<div style="position:relative;z-index:2;">
+<div style="font-size:60px;margin-bottom:20px;">📁</div>
+<h3 style="font-size:28px;margin-bottom:10px;">Transfer your files securely</h3>
+<p style="font-size:16px;margin-bottom:30px;opacity:0.9;max-width:500px;">Share large files instantly with anyone. Generate secure links and track your transfers.</p>
+<button onclick="goTransfer()" style="padding:15px 35px;background:white;color:#3b82f6;border:none;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 15px 40px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)';">Start Transferring</button>
+</div>
+</div>
+</div>
+
+<!-- File Converter Section -->
+<div style="margin-bottom:50px;">
+<div style="display:flex;gap:15px;align-items:center;margin-bottom:25px;">
+<span style="font-size:32px;">🔄</span>
+<h3 style="font-size:24px;font-weight:700;color:#111827;margin:0;">File Converter</h3>
+</div>
+<div class="converter-container" style="background:linear-gradient(135deg,#8b5cf6 0%,#6366f1 100%);border-radius:20px;padding:40px;color:white;min-height:300px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;">
+<div style="position:absolute;top:-50%;right:-10%;width:300px;height:300px;background:rgba(255,255,255,0.1);border-radius:50%;"></div>
+<div style="position:relative;z-index:2;">
+<div style="font-size:60px;margin-bottom:20px;">⚡</div>
+<h3 style="font-size:28px;margin-bottom:10px;">Convert to any format</h3>
+<p style="font-size:16px;margin-bottom:30px;opacity:0.9;max-width:500px;">PDF, DOCX, JPG, PNG, MP4, and 50+ more formats. Convert with one click.</p>
+<button onclick="goConvert()" style="padding:15px 35px;background:white;color:#8b5cf6;border:none;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 15px 40px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)';">Start Converting</button>
+</div>
+</div>
+</div>
+
+<!-- Quicker Section -->
+<div style="margin-bottom:50px;">
+<div style="display:flex;gap:15px;align-items:center;margin-bottom:25px;">
+<span style="font-size:32px;">🗜️</span>
+<h3 style="font-size:24px;font-weight:700;color:#111827;margin:0;">Quicker</h3>
+</div>
+<div class="compressor-container" style="background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:20px;padding:40px;color:white;min-height:300px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;">
+<div style="position:absolute;top:-50%;right:-10%;width:300px;height:300px;background:rgba(255,255,255,0.1);border-radius:50%;"></div>
+<div style="position:relative;z-index:2;">
+<div style="font-size:60px;margin-bottom:20px;">💾</div>
+<h3 style="font-size:28px;margin-bottom:10px;">Make files quicker</h3>
+<p style="font-size:16px;margin-bottom:30px;opacity:0.9;max-width:500px;">Reduce file size by up to 80% without losing quality. Perfect for email and storage.</p>
+<button onclick="goCompress()" style="padding:15px 35px;background:white;color:#10b981;border:none;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 15px 40px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)';">Start Quicker</button>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- Recent Activity -->
+<div class="activity-section">
+<h2 class="activity-title">Recent Activity</h2>
+<div class="activity-list" id="activityList">
+<div class="empty-state">
+<div class="empty-icon">📋</div>
+<h3>No activity yet</h3>
+<p>Start by transferring, converting, or compressing your first file</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+// Check if user is logged in
+function checkUser(){
+const user = JSON.parse(localStorage.getItem("user"));
+if(!user){
+window.location.href="index.html";
+return;
+}
+
+// Set user name and avatar
+const userName = user.name || user.email.split("@")[0];
+document.getElementById("userName").textContent = userName;
+document.getElementById("userAvatar").textContent = userName.charAt(0).toUpperCase();
+document.getElementById("welcomeTitle").textContent = `Welcome back, ${userName}! 👋`;
+
+// Load user stats
+loadUserStats();
+}
+
+// Load user statistics
+function loadUserStats(){
+const stats = JSON.parse(localStorage.getItem("userStats")) || {
+filesProcessed: 0,
+storageMB: 0,
+joinDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short'})
+};
+
+document.getElementById("filesProcessed").textContent = stats.filesProcessed;
+document.getElementById("storageUsed").textContent = (stats.storageMB || 0) + " MB";
+document.getElementById("joinDate").textContent = stats.joinDate;
+
+loadActivity();
+}
+
+// Load activity
+function loadActivity(){
+const activity = JSON.parse(localStorage.getItem("userActivity")) || [];
+
+if(activity.length === 0){
+return;
+}
+
+const activityList = document.getElementById("activityList");
+activityList.innerHTML = activity.slice(0, 5).map(item => `
+<div class="activity-item">
+<div class="activity-icon">${item.icon}</div>
+<div class="activity-content">
+<div class="activity-title-item">${item.title}</div>
+<div class="activity-size">${item.size}</div>
+<div class="activity-time">${item.time}</div>
+</div>
+</div>
+`).join("");
+}
+
+function goTransfer(){
+	const APP_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+	window.location.href = `${APP_BASE}/transfer.html`;
+}
+
+function goConvert(){
+	const APP_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+	window.location.href = `${APP_BASE}/convert.html`;
+}
+
+function goCompress(){
+	const APP_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+	window.location.href = `${APP_BASE}/compress.html`;
+}
+
+function logout(){
+if(confirm("Are you sure you want to logout?")){
+localStorage.removeItem("user");
+localStorage.removeItem("userStats");
+localStorage.removeItem("userActivity");
+		const APP_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+		window.location.href = `${APP_BASE}/index.html`;
+}
+}
+
+// Check user on page load
+window.addEventListener("load", checkUser);
+</script>
+
+</body>
+</html>

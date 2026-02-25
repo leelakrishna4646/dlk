@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwiftShare - Quicker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#f0fdf4,#ecfdf5);
+padding:40px 8%;
+min-height:100vh;
+}
+
+.container{
+max-width:800px;
+margin:0 auto;
+}
+
+.header{
+text-align:center;
+margin-bottom:40px;
+}
+
+.header h1{
+font-size:42px;
+font-weight:800;
+color:#111827;
+margin-bottom:10px;
+}
+
+.header p{
+font-size:18px;
+color:#6b7280;
+}
+
+.step-indicator{
+display:flex;
+justify-content:space-between;
+margin-bottom:40px;
+}
+
+.step{
+text-align:center;
+flex:1;
+}
+
+.step-number{
+width:50px;
+height:50px;
+background:linear-gradient(135deg,#10b981,#059669);
+color:white;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+font-size:20px;
+margin:0 auto 10px;
+}
+
+.step.inactive .step-number{
+background:#e5e7eb;
+color:#9ca3af;
+}
+
+.step-title{
+font-weight:600;
+color:#374151;
+font-size:14px;
+}
+
+.step.inactive .step-title{
+color:#9ca3af;
+}
+
+.step-divider{
+flex:1;
+height:2px;
+background:#e5e7eb;
+margin-top:25px;
+margin-left:10px;
+}
+
+/* STEP 1: Converter Selection */
+.step-content{
+display:none;
+}
+
+.step-content.active{
+display:block;
+animation:fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+.converter-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.converter-option{
+background:white;
+padding:25px 15px;
+border-radius:16px;
+text-align:center;
+cursor:pointer;
+transition:all 0.3s ease;
+border:2px solid #e5e7eb;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+.converter-option:hover{
+transform:translateY(-8px);
+border-color:#10b981;
+box-shadow:0 15px 40px rgba(16,185,129,0.2);
+}
+
+.converter-option.selected{
+background:linear-gradient(135deg,#10b981,#059669);
+color:white;
+border-color:#10b981;
+}
+
+.converter-icon{
+font-size:32px;
+margin-bottom:12px;
+}
+
+.converter-name{
+font-weight:600;
+font-size:14px;
+}
+
+/* STEP 2: File Upload */
+.upload-area{
+border:2px dashed #10b981;
+border-radius:16px;
+padding:40px;
+text-align:center;
+background:#f0fdf4;
+cursor:pointer;
+transition:all 0.3s ease;
+margin-bottom:30px;
+}
+
+.upload-area:hover{
+background:#ecfdf5;
+border-color:#059669;
+}
+
+.upload-area.dragover{
+background:#dcfce7;
+border-color:#059669;
+}
+
+.upload-icon{
+font-size:48px;
+margin-bottom:15px;
+}
+
+.upload-text{
+font-size:16px;
+font-weight:600;
+color:#111827;
+margin-bottom:5px;
+}
+
+.upload-subtext{
+font-size:14px;
+color:#6b7280;
+}
+
+.file-input{
+display:none;
+}
+
+.selected-file{
+background:#dcfce7;
+padding:15px;
+border-radius:12px;
+margin-bottom:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.file-name{
+font-weight:600;
+color:#059669;
+}
+
+.remove-file{
+cursor:pointer;
+color:#ef4444;
+font-weight:600;
+}
+
+/* STEP 3: Processing & Result */
+.processing{
+text-align:center;
+padding:40px;
+}
+
+.spinner{
+width:50px;
+height:50px;
+border:4px solid #e5e7eb;
+border-top-color:#10b981;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:0 auto 20px;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+.result-card{
+background:white;
+padding:30px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+margin-bottom:30px;
+}
+
+.result-success{
+text-align:center;
+}
+
+.success-icon{
+font-size:48px;
+margin-bottom:15px;
+}
+
+.result-title{
+font-size:24px;
+font-weight:700;
+color:#111827;
+margin-bottom:15px;
+}
+
+.code-section{
+background:#f0fdf4;
+padding:20px;
+border-radius:12px;
+margin:20px 0;
+}
+
+.code-label{
+font-size:14px;
+font-weight:600;
+color:#6b7280;
+margin-bottom:10px;
+}
+
+.code-display{
+background:white;
+padding:15px;
+border-radius:8px;
+border:2px solid #10b981;
+font-family:'Courier New',monospace;
+font-size:18px;
+font-weight:700;
+letter-spacing:3px;
+color:#059669;
+text-align:center;
+word-break:break-all;
+}
+
+.copy-btn{
+background:#10b981;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+transition:0.3s;
+margin-top:10px;
+}
+
+.copy-btn:hover{
+background:#059669;
+}
+
+.copy-btn.copied{
+background:#059669;
+}
+
+/* Buttons */
+.button-group{
+display:flex;
+gap:15px;
+justify-content:center;
+}
+
+.btn{
+padding:12px 30px;
+border-radius:10px;
+border:none;
+font-weight:600;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn-primary{
+background:linear-gradient(90deg,#10b981,#059669);
+color:white;
+}
+
+.btn-primary:hover{
+opacity:0.9;
+}
+
+.btn-primary:disabled{
+opacity:0.5;
+cursor:not-allowed;
+}
+
+.btn-secondary{
+background:white;
+border:2px solid #e5e7eb;
+color:#374151;
+}
+
+.btn-secondary:hover{
+border-color:#10b981;
+}
+
+.back-link{
+display:inline-block;
+margin-top:20px;
+text-decoration:none;
+color:#10b981;
+font-weight:600;
+}
+
+.back-link:hover{
+text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>⚡ Quicker</h1>
+<p>Convert & Generate Instant File Transfer Code</p>
+</div>
+
+<div class="step-indicator">
+<div class="step active">
+<div class="step-number">1</div>
+<div class="step-title">Choose Format</div>
+</div>
+<div class="step-divider"></div>
+<div class="step inactive" id="step2">
+<div class="step-number">2</div>
+<div class="step-title">Upload File</div>
+</div>
+<div class="step-divider"></div>
+<div class="step inactive" id="step3">
+<div class="step-number">3</div>
+<div class="step-title">Get Code</div>
+</div>
+</div>
+
+<!-- STEP 1: Select Converter -->
+<div class="step-content active" id="step1">
+<h2 style="margin-bottom:20px;color:#111827;font-weight:700;">Select Conversion Format</h2>
+<div class="converter-grid" id="converterGrid">
+<div class="converter-option" onclick="selectConverter(this, 'PDF to Word')">
+<div class="converter-icon">📄</div>
+<div class="converter-name">PDF to Word</div>
+</div>
+<div class="converter-option" onclick="selectConverter(this, 'PDF to Excel')">
+<div class="converter-icon">📊</div>
+<div class="converter-name">PDF to Excel</div>
+</div>
+<div class="converter-option" onclick="selectConverter(this, 'PDF to JPG')">
+<div class="converter-icon">🖼️</div>
+<div class="converter-name">PDF to JPG</div>
+</div>
+<div class="converter-option" onclick="selectConverter(this, 'Word to PDF')">
+<div class="converter-icon">📝</div>
+<div class="converter-name">Word to PDF</div>
+</div>
+<div class="converter-option" onclick="selectConverter(this, 'JPG to PDF')">
+<div class="converter-icon">🖼️</div>
+<div class="converter-name">JPG to PDF</div>
+</div>
+<div class="converter-option" onclick="selectConverter(this, 'PNG to PDF')">
+<div class="converter-icon">🎨</div>
+<div class="converter-name">PNG to PDF</div>
+</div>
+<div class="converter-option" onclick="selectConverter(this, 'Excel to PDF')">
+<div class="converter-icon">📈</div>
+<div class="converter-name">Excel to PDF</div>
+</div>
+<div class="converter-option" onclick="selectConverter(this, 'TXT to PDF')">
+<div class="converter-icon">✏️</div>
+<div class="converter-name">TXT to PDF</div>
+</div>
+</div>
+
+<div class="button-group">
+<button class="btn btn-secondary" onclick="window.location.href='index.html'">← Back</button>
+<button class="btn btn-primary" id="nextBtn" onclick="goToStep2()" disabled>Next →</button>
+</div>
+</div>
+
+<!-- STEP 2: Upload File -->
+<div class="step-content" id="step1-2">
+<h2 style="margin-bottom:20px;color:#111827;font-weight:700;">Upload File to Convert</h2>
+
+<div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+<div class="upload-icon">📤</div>
+<div class="upload-text">Click to upload or drag and drop</div>
+<div class="upload-subtext">Maximum file size: 50MB</div>
+</div>
+
+<input type="file" id="fileInput" class="file-input" onchange="handleFileSelect(event)">
+
+<div id="fileSelected" style="display:none;">
+<div class="selected-file">
+<span class="file-name" id="fileName"></span>
+<span class="remove-file" onclick="removeFile()">✕</span>
+</div>
+</div>
+
+<div class="button-group">
+<button class="btn btn-secondary" onclick="goToStep1()">← Back</button>
+<button class="btn btn-primary" id="convertBtn" onclick="startConversion()" disabled>Convert & Generate Code →</button>
+</div>
+</div>
+
+<!-- STEP 3: Result with Code -->
+<div class="step-content" id="step1-3">
+<div class="result-card">
+<div class="result-success">
+<div class="success-icon">✅</div>
+<div class="result-title">Conversion Complete!</div>
+<p style="color:#6b7280;margin-bottom:20px;">Your file has been converted and is ready to download or share.</p>
+
+<div class="code-section">
+<div class="code-label">Your Transfer Code (Share this with others):</div>
+<div class="code-display" id="codeDisplay"></div>
+<button class="copy-btn" id="copyBtn" onclick="copyCode()">📋 Copy Code</button>
+</div>
+
+<div style="margin-top:25px;padding-top:25px;border-top:1px solid #e5e7eb;">
+<div style="font-weight:700;margin-bottom:15px;color:#111827;">Quick Actions:</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
+<button class="btn btn-primary" onclick="downloadMyFile()">⬇️ Download My File</button>
+<button class="btn btn-secondary" onclick="shareCode()">🔗 Share Code</button>
+</div>
+</div>
+
+<p style="color:#6b7280;font-size:14px;margin-top:20px;">
+💡 <strong>Tip:</strong> Your code can be shared so others can download this file from the <strong>Transfer</strong> page instantly!
+</p>
+</div>
+</div>
+
+<div class="button-group">
+<button class="btn btn-secondary" onclick="startAgain()">← Start Again</button>
+<button class="btn btn-primary" onclick="window.location.href='transfer.html'">Go to Transfer →</button>
+</div>
+</div>
+
+</div>
+
+<script>
+// Determine API base so fetch works when page is opened via file://
+const API_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+
+let selectedConversionType = '';
+let selectedFile = null;
+
+function selectConverter(element, type) {
+  // Remove previous selection
+  document.querySelectorAll('.converter-option').forEach(el => {
+    el.classList.remove('selected');
+  });
+  // Add selection to clicked element
+  element.classList.add('selected');
+  selectedConversionType = type;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function goToStep2() {
+  if(!selectedConversionType) {
+    alert('Please select a conversion format');
+    return;
+  }
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step1-2').style.display = 'block';
+  
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('step2').classList.remove('inactive');
+  
+  document.getElementById('step1-2').style.animation = 'fadeIn 0.3s ease';
+}
+
+function goToStep1() {
+  document.getElementById('step1').style.display = 'block';
+  document.getElementById('step1-2').style.display = 'none';
+  
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step2').classList.add('inactive');
+}
+
+function handleFileSelect(event) {
+  const file = event.target.files[0];
+  if(file) {
+    selectedFile = file;
+    document.getElementById('fileName').textContent = `📎 ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+    document.getElementById('fileSelected').style.display = 'block';
+    document.getElementById('convertBtn').disabled = false;
+  }
+}
+
+function removeFile() {
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('fileSelected').style.display = 'none';
+  document.getElementById('convertBtn').disabled = true;
+}
+
+async function startConversion() {
+  if(!selectedFile) {
+    alert('Please select a file');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', selectedFile);
+  formData.append('conversionType', selectedConversionType);
+
+  document.getElementById('step1-2').style.display = 'none';
+  
+  const processingHTML = `
+    <div class="processing">
+      <div class="spinner"></div>
+      <p style="color:#6b7280;font-weight:600;">Converting your file...</p>
+    </div>
+  `;
+  
+  document.getElementById('step1').innerHTML = processingHTML;
+  document.getElementById('step1').style.display = 'block';
+
+  try {
+    const response = await fetch(`${API_BASE}/api/quicker-convert`, {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await response.json();
+    console.log('Server response:', data);
+
+    if(data.success) {
+      showResult(data.code, data.fileName);
+    } else {
+      alert('Error: ' + (data.message || 'Conversion failed'));
+      goToStep2();
+    }
+  } catch(err) {
+    console.error('Conversion error:', err);
+    alert('Error: ' + err.message);
+    goToStep2();
+  }
+}
+
+function showResult(code, fileName) {
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step1-2').style.display = 'none';
+  document.getElementById('step1-3').style.display = 'block';
+  
+  document.getElementById('codeDisplay').textContent = code;
+  
+  document.getElementById('step3').classList.add('active');
+  document.getElementById('step3').classList.remove('inactive');
+  
+  document.getElementById('step1-3').style.animation = 'fadeIn 0.3s ease';
+}
+
+function copyCode() {
+  const code = document.getElementById('codeDisplay').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy Code';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function downloadMyFile() {
+  const code = document.getElementById('codeDisplay').textContent;
+  
+  // Fetch file info first
+  fetch(`${API_BASE}/api/file-info/${code}`)
+    .then(res => res.json())
+    .then(data => {
+      if(data.success) {
+        // Download the file
+        const link = document.createElement('a');
+        link.href = `${API_BASE}/api/retrieve-file/${code}`;
+        link.download = data.fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        alert('Error: ' + data.message);
+      }
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      alert('Failed to download file');
+    });
+}
+
+function shareCode() {
+  const code = document.getElementById('codeDisplay').textContent;
+  const shareText = `I have a converted file ready for you! 🎉\n\nTransfer Code: ${code}\n\nVisit CloudShare and go to the Transfer page, then paste this code to download the file!`;
+  
+  if(navigator.share) {
+    navigator.share({
+      title: 'File from CloudShare',
+      text: shareText
+    });
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(shareText).then(() => {
+      alert('Share text copied to clipboard!');
+    });
+  }
+}
+
+function startAgain() {
+  selectedConversionType = '';
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  
+  document.getElementById('step1').style.display = 'block';
+  document.getElementById('step1-3').style.display = 'none';
+  document.getElementById('step1-2').style.display = 'none';
+  document.getElementById('step1').style.display = 'block';
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step2').classList.add('inactive');
+  document.getElementById('step3').classList.remove('active');
+  document.getElementById('step3').classList.add('inactive');
+  
+  document.querySelectorAll('.converter-option').forEach(el => {
+    el.classList.remove('selected');
+  });
+  document.getElementById('nextBtn').disabled = true;
+}
+
+// Drag and drop
+const uploadArea = document.getElementById('uploadArea');
+
+uploadArea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadArea.classList.add('dragover');
+});
+
+uploadArea.addEventListener('dragleave', () => {
+  uploadArea.classList.remove('dragover');
+});
+
+uploadArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadArea.classList.remove('dragover');
+  const files = e.dataTransfer.files;
+  if(files.length > 0) {
+    document.getElementById('fileInput').files = files;
+    handleFileSelect({target: {files: files}});
+  }
+});
+</script>
+
+</body>
+</html>

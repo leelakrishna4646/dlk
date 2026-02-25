@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloudShare | File Transfer & Conversion</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:linear-gradient(135deg,#f4e9ff,#e8f1ff);color:#111827;}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+}
+
+.logo{font-size:22px;font-weight:800;}
+
+nav ul{
+display:flex;
+list-style:none;
+gap:30px;
+}
+
+nav ul li{
+cursor:pointer;
+font-weight:600;
+}
+
+nav ul li:hover{
+color:#7c3aed;
+}
+
+.btn{
+padding:10px 20px;
+border-radius:12px;
+border:none;
+font-weight:600;
+cursor:pointer;
+}
+
+.start{
+background:linear-gradient(90deg,#7c3aed,#2563eb);
+color:white;
+}
+
+.nav-buttons{
+display:flex;
+gap:15px;
+}
+
+.login-free{
+padding:10px 20px;
+border-radius:12px;
+border:none;
+background:#dbeafe;
+color:#1e40af;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+.login-free:hover{
+background:#bfdbfe;
+}
+
+.login-btn{
+padding:10px 20px;
+border-radius:12px;
+border:none;
+background:linear-gradient(90deg,#7c3aed,#2563eb);
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+.login-btn:hover{
+opacity:0.9;
+}
+
+.hero{
+text-align:center;
+padding:120px 10%;
+}
+
+.hero h1{
+font-size:60px;
+font-weight:800;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:20px;
+color:#4b5563;
+margin-bottom:40px;
+}
+
+.hero-buttons{
+display:flex;
+justify-content:center;
+gap:20px;
+}
+
+.primary{
+padding:15px 30px;
+border-radius:14px;
+border:none;
+background:linear-gradient(90deg,#7c3aed,#2563eb);
+color:white;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+}
+
+.secondary{
+padding:15px 30px;
+border-radius:14px;
+border:none;
+background:#dbeafe;
+color:#1e40af;
+font-weight:600;
+cursor:pointer;
+}
+
+.features{
+display:flex;
+justify-content:center;
+gap:40px;
+padding:80px 10%;
+flex-wrap:wrap;
+}
+
+.card{
+width:350px;
+padding:35px;
+border-radius:25px;
+color:white;
+cursor:pointer;
+transition:0.4s;
+}
+
+.card:hover{
+transform:translateY(-10px);
+}
+
+.transfer{background:linear-gradient(135deg,#3b82f6,#2563eb);}
+.convert{background:linear-gradient(135deg,#ec4899,#8b5cf6);}
+
+footer{
+text-align:center;
+padding:40px;
+color:#6b7280;
+}
+.features{
+display:flex;
+justify-content:center;
+gap:60px;
+padding:100px 10%;
+flex-wrap:wrap;
+}
+
+.feature-card{
+width:420px;
+height:260px;
+padding:40px;
+border-radius:30px;
+color:white;
+position:relative;
+cursor:pointer;
+overflow:hidden;
+transition:all 0.4s ease;
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
+}
+
+.feature-card h2{
+font-size:32px;
+margin-bottom:15px;
+font-weight:700;
+}
+
+.feature-card p{
+font-size:18px;
+opacity:0.9;
+max-width:320px;
+}
+
+.feature-card:hover{
+transform:translateY(-12px) scale(1.03);
+box-shadow:0 30px 60px rgba(0,0,0,0.25);
+}
+
+/* Blue Transfer Card */
+.blue{
+background:linear-gradient(135deg,#3b82f6,#2563eb);
+}
+
+.blue::after{
+content:"";
+position:absolute;
+width:250px;
+height:250px;
+background:rgba(255,255,255,0.15);
+border-radius:50%;
+bottom:-80px;
+right:-60px;
+transition:0.4s;
+}
+
+.blue:hover::after{
+transform:scale(1.2);
+}
+
+/* Purple Converter Card */
+.purple{
+background:linear-gradient(135deg,#8b5cf6,#6366f1);
+}
+
+.purple::after{
+content:"";
+position:absolute;
+width:250px;
+height:250px;
+background:rgba(255,255,255,0.15);
+border-radius:50%;
+bottom:-80px;
+right:-60px;
+transition:0.4s;
+}
+
+.purple:hover::after{
+transform:scale(1.2);
+}
+
+/* Green Compression Card */
+.green{
+background:linear-gradient(135deg,#10b981,#059669);
+}
+
+.green::after{
+content:"";
+position:absolute;
+width:250px;
+height:250px;
+background:rgba(255,255,255,0.15);
+border-radius:50%;
+bottom:-80px;
+right:-60px;
+transition:0.4s;
+}
+
+.green:hover::after{
+transform:scale(1.2);
+}
+
+/* Arrow Button */
+.arrow{
+position:absolute;
+bottom:30px;
+left:40px;
+background:rgba(255,255,255,0.2);
+padding:12px 18px;
+border-radius:12px;
+font-size:20px;
+transition:0.3s;
+}
+
+.feature-card:hover .arrow{
+transform:translateX(10px);
+background:rgba(255,255,255,0.3);
+}
+
+/* Modal Styling */
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+z-index:1000;
+justify-content:center;
+align-items:center;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modal-content{
+background:linear-gradient(135deg,#ffffff 0%,#f8f9ff 100%);
+padding:50px 40px;
+border-radius:25px;
+width:90%;
+max-width:500px;
+box-shadow:0 25px 80px rgba(0,0,0,0.15);
+animation:slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+border:1px solid rgba(255,255,255,0.8);
+position:relative;
+overflow:hidden;
+}
+
+.modal-content::before{
+content:"";
+position:absolute;
+top:-50%;
+right:-50%;
+width:500px;
+height:500px;
+background:radial-gradient(circle,rgba(124,58,237,0.1) 0%,transparent 70%);
+border-radius:50%;
+pointer-events:none;
+}
+
+@keyframes slideIn{
+from{
+transform:translateY(-50px);
+opacity:0;
+}
+to{
+transform:translateY(0);
+opacity:1;
+}
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+}
+to{
+opacity:1;
+}
+}
+
+@keyframes pulse{
+0%,100%{
+transform:scale(1);
+}
+50%{
+transform:scale(0.95);
+}
+}
+
+.modal-header{
+font-size:32px;
+font-weight:800;
+margin-bottom:10px;
+color:#111827;
+background:linear-gradient(135deg,#7c3aed,#2563eb);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+letter-spacing:-0.5px;
+}
+
+.modal-subtitle{
+font-size:14px;
+color:#6b7280;
+margin-bottom:30px;
+font-weight:500;
+}
+
+.modal-icon{
+display:inline-block;
+font-size:40px;
+margin-bottom:15px;
+margin-right:10px;
+}
+
+
+.modal-close{
+position:absolute;
+top:20px;
+right:20px;
+font-size:28px;
+cursor:pointer;
+color:#d1d5db;
+transition:all 0.3s ease;
+width:40px;
+height:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+background:rgba(0,0,0,0.02);
+}
+
+.modal-close:hover{
+color:#7c3aed;
+background:rgba(124,58,237,0.1);
+transform:rotate(90deg);
+}
+
+.form-group{
+margin-bottom:22px;
+position:relative;
+}
+
+.form-group label{
+display:block;
+margin-bottom:10px;
+font-weight:600;
+color:#374151;
+font-size:14px;
+text-transform:uppercase;
+letter-spacing:0.5px;
+}
+
+.form-group input{
+width:100%;
+padding:14px 16px;
+border:2px solid #e5e7eb;
+border-radius:14px;
+font-size:16px;
+transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+box-sizing:border-box;
+background:#f9fafb;
+}
+
+.form-group input:hover{
+border-color:#d1d5db;
+background:#f3f4f6;
+}
+
+.form-group input:focus{
+outline:none;
+border-color:#7c3aed;
+background:white;
+box-shadow:0 0 0 4px rgba(124,58,237,0.1);
+}
+
+.form-group input::placeholder{
+color:#9ca3af;
+}
+
+
+.form-submit{
+width:100%;
+padding:16px;
+background:linear-gradient(90deg,#7c3aed,#2563eb);
+color:white;
+border:none;
+border-radius:14px;
+font-weight:700;
+font-size:16px;
+cursor:pointer;
+transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+letter-spacing:0.3px;
+text-transform:uppercase;
+position:relative;
+overflow:hidden;
+margin-top:10px;
+box-shadow:0 10px 30px rgba(124,58,237,0.3);
+}
+
+.form-submit::before{
+content:"";
+position:absolute;
+top:50%;
+left:50%;
+width:0;
+height:0;
+border-radius:50%;
+background:rgba(255,255,255,0.3);
+transform:translate(-50%,-50%);
+transition:width 0.6s,height 0.6s;
+}
+
+.form-submit:hover::before{
+width:300px;
+height:300px;
+}
+
+.form-submit:hover{
+transform:translateY(-2px);
+box-shadow:0 15px 45px rgba(124,58,237,0.4);
+}
+
+.form-submit:active{
+transform:translateY(0);
+}
+
+
+.form-toggle{
+text-align:center;
+margin-top:25px;
+font-size:14px;
+color:#6b7280;
+padding-top:20px;
+border-top:1px solid #e5e7eb;
+}
+
+.form-toggle a{
+color:#7c3aed;
+text-decoration:none;
+cursor:pointer;
+font-weight:700;
+transition:all 0.3s ease;
+position:relative;
+}
+
+.form-toggle a::after{
+content:"";
+position:absolute;
+bottom:-2px;
+left:0;
+width:0;
+height:2px;
+background:linear-gradient(90deg,#7c3aed,#2563eb);
+transition:width 0.3s ease;
+}
+
+.form-toggle a:hover::after{
+width:100%;
+}
+
+.form-toggle a:hover{
+color:#2563eb;
+}
+
+.social-login{
+margin-top:25px;
+padding-top:25px;
+border-top:1px solid #e5e7eb;
+}
+
+.social-title{
+font-size:12px;
+color:#9ca3af;
+margin-bottom:15px;
+text-transform:uppercase;
+letter-spacing:0.5px;
+font-weight:600;
+}
+
+.social-buttons{
+display:flex;
+gap:12px;
+justify-content:center;
+}
+
+.social-btn{
+width:45px;
+height:45px;
+border-radius:12px;
+border:2px solid #e5e7eb;
+background:white;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+transition:all 0.3s ease;
+}
+
+.social-btn:hover{
+border-color:#7c3aed;
+background:rgba(124,58,237,0.1);
+transform:translateY(-4px);
+box-shadow:0 8px 20px rgba(124,58,237,0.15);
+}
+
+.divider{
+display:flex;
+align-items:center;
+margin:25px 0;
+}
+
+.divider::before,
+.divider::after{
+content:"";
+flex:1;
+height:1px;
+background:#e5e7eb;
+}
+
+.divider-text{
+margin:0 15px;
+color:#9ca3af;
+font-size:13px;
+font-weight:500;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">CloudShare</div>
+
+<ul>
+<li onclick="goTransfer()">File Transfer</li>
+<li onclick="goConvert()">File Converter</li>
+<li onclick="goCompress()">Quicker</li>
+</ul>
+
+<div class="nav-buttons">
+<button class="login-free" onclick="loginFree()">Login Free</button>
+<button class="login-btn" onclick="loginUser()">Login</button>
+</div>
+</nav>
+
+<section class="hero">
+<h1>One Platform.<br>Instant File Sharing & Conversion.</h1>
+<p>Upload once. Share anywhere. Convert instantly. No account required.</p>
+
+<div class="hero-buttons">
+<button class="primary" onclick="goTransfer()">Start Sharing</button>
+<button class="secondary" onclick="goConvert()">Convert Files</button>
+</div>
+</section>
+
+<section class="features">
+
+<div class="feature-card blue" onclick="goTransfer()">
+    <h2>File Transfer</h2>
+    <p>Transfer your files across devices instantly and securely without login.</p>
+    <div class="arrow">→</div>
+</div>
+
+<div class="feature-card purple" onclick="goConvert()">
+    <h2>File Converter</h2>
+    <p>Easily convert your files to PDF, DOCX, JPG, PNG and more formats.</p>
+    <div class="arrow">→</div>
+</div>
+
+<div class="feature-card green" onclick="goCompress()">
+    <h2>Quicker</h2>
+    <p>Compress and optimize files quickly to save storage and bandwidth.</p>
+    <div class="arrow">→</div>
+</div>
+
+</section>
+
+
+<footer>
+© 2026 SwiftShare
+</footer>
+
+<!-- Login Free Modal -->
+<div id="loginFreeModal" class="modal">
+<div class="modal-content" style="position:relative;">
+<span class="modal-close" onclick="closeLoginFreeModal()">&times;</span>
+<div>
+<div class="modal-icon">🚀</div>
+<div class="modal-header">Quick Access</div>
+<div class="modal-subtitle">Get started in seconds with just your email</div>
+</div>
+<form onsubmit="handleLoginFree(event)">
+<div class="form-group">
+<label>Email</label>
+<input type="email" placeholder="your@email.com" required>
+</div>
+<div class="form-group">
+<label>Name</label>
+<input type="text" placeholder="Your name" required>
+</div>
+<button type="submit" class="form-submit">Get Started</button>
+</form>
+
+<div class="divider">
+<span class="divider-text">OR</span>
+</div>
+
+<div class="social-login">
+<div class="social-title">Connect with</div>
+<div class="social-buttons">
+<button type="button" class="social-btn" title="Google" onclick="alert('Coming soon!')">🔵</button>
+<button type="button" class="social-btn" title="Microsoft" onclick="alert('Coming soon!')">🟦</button>
+<button type="button" class="social-btn" title="GitHub" onclick="alert('Coming soon!')">⚫</button>
+</div>
+</div>
+
+<div class="form-toggle">
+Need an account? <a onclick="switchToLogin()">Sign Up Here</a>
+</div>
+</div>
+</div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+<div class="modal-content" style="position:relative;">
+<span class="modal-close" onclick="closeLoginModal()">&times;</span>
+<div>
+<div class="modal-icon">🔐</div>
+<div class="modal-header">Welcome Back</div>
+<div class="modal-subtitle">Sign in to your account to access premium features</div>
+</div>
+<form onsubmit="handleLogin(event)">
+<div class="form-group">
+<label>Email</label>
+<input type="email" placeholder="your@email.com" required>
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" placeholder="Enter password" required>
+</div>
+<button type="submit" class="form-submit">Sign In</button>
+</form>
+
+<div class="divider">
+<span class="divider-text">OR</span>
+</div>
+
+<div class="social-login">
+<div class="social-title">Connect with</div>
+<div class="social-buttons">
+<button type="button" class="social-btn" title="Google" onclick="alert('Coming soon!')">🔵</button>
+<button type="button" class="social-btn" title="Microsoft" onclick="alert('Coming soon!')">🟦</button>
+<button type="button" class="social-btn" title="GitHub" onclick="alert('Coming soon!')">⚫</button>
+</div>
+</div>
+
+<div class="form-toggle">
+Don't have an account? <a onclick="switchToLoginFree()">Create One</a>
+</div>
+</div>
+</div>
+
+<script>
+function goTransfer(){
+    const APP_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+    window.location.href = `${APP_BASE}/transfer.html`;
+}
+
+function goConvert(){
+    const APP_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+    window.location.href = `${APP_BASE}/convert.html`;
+}
+
+function goCompress(){
+    const APP_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+    window.location.href = `${APP_BASE}/compress.html`;
+}
+
+function loginFree(){
+document.getElementById("loginFreeModal").classList.add("show");
+}
+
+function loginUser(){
+document.getElementById("loginModal").classList.add("show");
+}
+
+function closeLoginFreeModal(){
+document.getElementById("loginFreeModal").classList.remove("show");
+}
+
+function closeLoginModal(){
+document.getElementById("loginModal").classList.remove("show");
+}
+
+function switchToLogin(){
+closeLoginFreeModal();
+loginUser();
+}
+
+function switchToLoginFree(){
+closeLoginModal();
+loginFree();
+}
+
+function handleLoginFree(event){
+event.preventDefault();
+const email = event.target[0].value;
+const name = event.target[1].value;
+
+fetch("/api/login-free", {
+method: "POST",
+headers: {"Content-Type": "application/json"},
+body: JSON.stringify({email, name})
+})
+.then(res => res.json())
+.then(data => {
+if(data.success){
+alert("Access granted! Welcome " + name);
+const userData = {email, name, mode: "free"};
+localStorage.setItem("user", JSON.stringify(userData));
+
+// Initialize user stats
+const userStats = {
+filesProcessed: 0,
+storageMB: 0,
+joinDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short'})
+};
+localStorage.setItem("userStats", JSON.stringify(userStats));
+localStorage.setItem("userActivity", JSON.stringify([]));
+
+closeLoginFreeModal();
+window.location.href="landing.html";
+} else {
+alert("Error: " + data.message);
+}
+})
+.catch(err => console.error(err));
+}
+
+function handleLogin(event){
+event.preventDefault();
+const email = event.target[0].value;
+const password = event.target[1].value;
+
+fetch("/api/login", {
+method: "POST",
+headers: {"Content-Type": "application/json"},
+body: JSON.stringify({email, password})
+})
+.then(res => res.json())
+.then(data => {
+if(data.success){
+alert("Login successful! Welcome back");
+const userData = {email, mode: "premium"};
+localStorage.setItem("user", JSON.stringify(userData));
+
+// Initialize user stats
+const userStats = {
+filesProcessed: 0,
+storageMB: 0,
+joinDate: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short'})
+};
+localStorage.setItem("userStats", JSON.stringify(userStats));
+localStorage.setItem("userActivity", JSON.stringify([]));
+
+closeLoginModal();
+window.location.href="landing.html";
+} else {
+alert("Error: " + data.message);
+}
+})
+.catch(err => console.error(err));
+}
+
+window.onclick = function(event) {
+const loginFreeModal = document.getElementById("loginFreeModal");
+const loginModal = document.getElementById("loginModal");
+if(event.target === loginFreeModal) {
+closeLoginFreeModal();
+}
+if(event.target === loginModal) {
+closeLoginModal();
+}
+}
+</script>
+
+
+</body>
+</html>

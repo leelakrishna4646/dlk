@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SwiftShare - PDF Converters</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#eef2ff,#f8fafc);
+padding:60px 8%;
+}
+
+h1{
+text-align:center;
+font-size:42px;
+margin-bottom:20px;
+font-weight:800;
+color:#111827;
+}
+
+.section-title{
+font-size:26px;
+margin:60px 0 30px;
+font-weight:700;
+color:#374151;
+}
+
+/* GRID */
+.converter-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:35px;
+}
+
+/* CARD */
+.converter-card{
+background:rgba(255,255,255,0.8);
+backdrop-filter:blur(10px);
+padding:35px 25px;
+border-radius:24px;
+text-align:center;
+cursor:pointer;
+transition:all 0.4s ease;
+box-shadow:0 15px 40px rgba(0,0,0,0.08);
+position:relative;
+overflow:hidden;
+border:1px solid rgba(255,255,255,0.3);
+}
+
+.converter-card:hover{
+transform:translateY(-10px) scale(1.04);
+box-shadow:0 25px 60px rgba(99,102,241,0.25);
+border-color:#6366f1;
+}
+
+/* ICON */
+.icon{
+font-size:36px;
+margin-bottom:18px;
+background:linear-gradient(135deg,#6366f1,#8b5cf6);
+background-clip:text;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* TITLE */
+.converter-card h3{
+font-size:20px;
+margin-bottom:10px;
+font-weight:700;
+color:#111827;
+}
+
+.converter-card p{
+font-size:14px;
+color:#6b7280;
+}
+
+/* Arrow */
+.arrow{
+position:absolute;
+bottom:20px;
+right:25px;
+font-size:18px;
+opacity:0;
+transition:0.3s;
+color:#6366f1;
+}
+
+.converter-card:hover .arrow{
+opacity:1;
+transform:translateX(6px);
+}
+
+/* Fade Animation */
+.converter-card{
+animation:fadeUp 0.8s ease forwards;
+opacity:0;
+}
+
+.converter-card:nth-child(n){
+animation-delay:0.1s;
+}
+
+@keyframes fadeUp{
+from{transform:translateY(40px);opacity:0;}
+to{transform:translateY(0);opacity:1;}
+}
+
+/* Back */
+.back{
+display:block;
+text-align:center;
+margin-top:70px;
+text-decoration:none;
+font-weight:600;
+color:#6366f1;
+}
+
+/* Modal Styling */
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+z-index:1000;
+justify-content:center;
+align-items:center;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modal-content{
+background:white;
+padding:40px;
+border-radius:20px;
+width:90%;
+max-width:500px;
+box-shadow:0 20px 60px rgba(0,0,0,0.3);
+animation:slideIn 0.3s ease;
+}
+
+@keyframes slideIn{
+from{
+transform:translateY(-50px);
+opacity:0;
+}
+to{
+transform:translateY(0);
+opacity:1;
+}
+}
+
+.modal-header{
+font-size:28px;
+font-weight:700;
+margin-bottom:20px;
+color:#111827;
+}
+
+.modal-close{
+position:absolute;
+top:15px;
+right:20px;
+font-size:30px;
+cursor:pointer;
+color:#6b7280;
+transition:0.2s;
+}
+
+.modal-close:hover{
+color:#111827;
+}
+
+.form-group{
+margin-bottom:20px;
+}
+
+.form-group label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+color:#374151;
+}
+
+.form-group input[type="file"]{
+width:100%;
+padding:12px;
+border:2px dashed #e5e7eb;
+border-radius:10px;
+font-size:14px;
+box-sizing:border-box;
+background:#f9fafb;
+cursor:pointer;
+}
+
+.form-group input[type="file"]:hover{
+border-color:#6366f1;
+}
+
+.form-submit{
+width:100%;
+padding:12px 20px;
+background:linear-gradient(90deg,#6366f1,#8b5cf6);
+color:white;
+border:none;
+border-radius:10px;
+font-weight:600;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.form-submit:hover{
+opacity:0.9;
+}
+
+.form-submit:disabled{
+opacity:0.5;
+cursor:not-allowed;
+}
+
+.conversion-type{
+background:#f3f4f6;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+font-weight:600;
+color:#374151;
+text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<h1>All PDF Conversions</h1>
+
+<!-- FROM PDF -->
+<div class="section-title">Convert From PDF</div>
+
+<div class="converter-grid">
+
+<div class="converter-card" onclick="openConverter('PDF to Word')">
+<div class="icon">📄</div>
+<h3>PDF to Word</h3>
+<p>Convert PDF files to editable DOCX format.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('PDF to Excel')">
+<div class="icon">📊</div>
+<h3>PDF to Excel</h3>
+<p>Extract tables to XLSX spreadsheets.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('PDF to PPT')">
+<div class="icon">📈</div>
+<h3>PDF to PPT</h3>
+<p>Convert PDF slides to PowerPoint.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('PDF to JPG')">
+<div class="icon">🖼️</div>
+<h3>PDF to JPG</h3>
+<p>Convert pages into JPG images.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('PDF to PNG')">
+<div class="icon">🖼️</div>
+<h3>PDF to PNG</h3>
+<p>Export PDF pages as PNG files.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('PDF to TXT')">
+<div class="icon">📝</div>
+<h3>PDF to TXT</h3>
+<p>Extract plain text from PDF.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('PDF to HTML')">
+<div class="icon">💻</div>
+<h3>PDF to HTML</h3>
+<p>Convert PDF to web-ready HTML.</p>
+<div class="arrow">→</div>
+</div>
+
+</div>
+
+<!-- TO PDF -->
+<div class="section-title">Convert To PDF</div>
+
+<div class="converter-grid">
+
+<div class="converter-card" onclick="openConverter('Word to PDF')">
+<div class="icon">📄</div>
+<h3>Word to PDF</h3>
+<p>Convert DOCX files to PDF.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('Excel to PDF')">
+<div class="icon">📊</div>
+<h3>Excel to PDF</h3>
+<p>Convert XLSX spreadsheets to PDF.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('PPT to PDF')">
+<div class="icon">📈</div>
+<h3>PPT to PDF</h3>
+<p>Convert PowerPoint to PDF.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('JPG to PDF')">
+<div class="icon">🖼️</div>
+<h3>JPG to PDF</h3>
+<p>Convert JPG images into PDF.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('PNG to PDF')">
+<div class="icon">🖼️</div>
+<h3>PNG to PDF</h3>
+<p>Convert PNG images into PDF.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('TXT to PDF')">
+<div class="icon">📝</div>
+<h3>TXT to PDF</h3>
+<p>Create PDF from text files.</p>
+<div class="arrow">→</div>
+</div>
+
+<div class="converter-card" onclick="openConverter('HTML to PDF')">
+<div class="icon">💻</div>
+<h3>HTML to PDF</h3>
+<p>Convert web pages to PDF.</p>
+<div class="arrow">→</div>
+</div>
+
+</div>
+
+<a href="index.html" class="back">⬅ Back to Home</a>
+
+<!-- Conversion Modal -->
+<div id="conversionModal" class="modal">
+<div class="modal-content" style="position:relative;">
+<span class="modal-close" onclick="closeModal()">&times;</span>
+<div class="modal-header">Convert File</div>
+<div class="conversion-type" id="conversionType">PDF to Word</div>
+<form onsubmit="handleConversion(event)">
+<div class="form-group">
+<label>Select File</label>
+<input type="file" id="fileInput" required>
+</div>
+<button type="submit" class="form-submit" id="submitBtn">Convert File</button>
+</form>
+</div>
+</div>
+
+<script>
+let selectedConversion = '';
+
+function openConverter(type){
+selectedConversion = type;
+document.getElementById('conversionType').textContent = type;
+document.getElementById('conversionModal').classList.add('show');
+}
+
+function closeModal(){
+document.getElementById('conversionModal').classList.remove('show');
+document.getElementById('fileInput').value = '';
+}
+
+function handleConversion(event){
+event.preventDefault();
+const file = document.getElementById('fileInput').files[0];
+const submitBtn = document.getElementById('submitBtn');
+
+// Determine API base so fetch works when page is opened via file://
+const API_BASE = (window.location.protocol === 'file:' || window.location.origin === 'null') ? 'http://localhost:3000' : window.location.origin;
+
+if(!file) {
+alert('Please select a file');
+return;
+}
+
+const formData = new FormData();
+formData.append('file', file);
+formData.append('conversionType', selectedConversion);
+
+submitBtn.disabled = true;
+submitBtn.textContent = 'Converting...';
+
+fetch(`${API_BASE}/api/convert`, {
+method: 'POST',
+body: formData
+})
+.then(async res => {
+console.log('Response status:', res.status);
+if(res.ok) {
+const blob = await res.blob();
+return { blob: blob, fileName: 'converted-file' };
+} else {
+const data = await res.json().catch(() => ({}));
+throw new Error(data.message || 'Conversion failed');
+}
+})
+.then(({blob, fileName}) => {
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = fileName;
+document.body.appendChild(a);
+a.click();
+window.URL.revokeObjectURL(url);
+a.remove();
+
+alert('File converted successfully!');
+closeModal();
+document.getElementById('fileInput').value = '';
+submitBtn.disabled = false;
+submitBtn.textContent = 'Convert File';
+})
+.catch(err => {
+console.error('Conversion error:', err);
+alert('Error: ' + err.message);
+submitBtn.disabled = false;
+submitBtn.textContent = 'Convert File';
+});
+}
+
+window.onclick = function(event) {
+const modal = document.getElementById('conversionModal');
+if(event.target === modal) {
+closeModal();
+}
+}
+</script>
+
+</body>
+</html>

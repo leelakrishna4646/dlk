@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwiftShare - File Transfer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#eff6ff,#f0f9ff);
+padding:40px 8%;
+min-height:100vh;
+}
+
+.container{
+max-width:900px;
+margin:0 auto;
+}
+
+.header{
+text-align:center;
+margin-bottom:40px;
+}
+
+.header h1{
+font-size:42px;
+font-weight:800;
+color:#111827;
+margin-bottom:10px;
+}
+
+.header p{
+font-size:18px;
+color:#6b7280;
+}
+
+.tabs{
+display:flex;
+gap:10px;
+margin-bottom:30px;
+border-bottom:2px solid #e5e7eb;
+}
+
+.tab{
+padding:15px 25px;
+background:none;
+border:none;
+cursor:pointer;
+font-size:16px;
+font-weight:600;
+color:#6b7280;
+transition:all 0.3s;
+border-bottom:3px solid transparent;
+position:relative;
+top:2px;
+}
+
+.tab.active{
+color:#2563eb;
+border-bottom-color:#2563eb;
+}
+
+.tab-content{
+display:none;
+}
+
+.tab-content.active{
+display:block;
+animation:fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+.box{
+background:white;
+padding:40px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+margin-bottom:30px;
+}
+
+.box h2{
+font-size:24px;
+font-weight:700;
+color:#111827;
+margin-bottom:20px;
+}
+
+.form-group{
+margin-bottom:20px;
+}
+
+.form-group label{
+display:block;
+margin-bottom:10px;
+font-weight:600;
+color:#374151;
+}
+
+input[type="text"],
+input[type="file"]{
+width:100%;
+padding:12px;
+border:2px solid #e5e7eb;
+border-radius:10px;
+font-size:16px;
+transition:all 0.2s;
+box-sizing:border-box;
+}
+
+input[type="text"]:focus,
+input[type="file"]:focus{
+outline:none;
+border-color:#2563eb;
+}
+
+input[type="file"]{
+cursor:pointer;
+padding:8px;
+}
+
+button{
+width:100%;
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#2563eb,#1d4ed8);
+color:white;
+cursor:pointer;
+font-size:16px;
+font-weight:600;
+transition:all 0.3s;
+margin-top:10px;
+}
+
+button:hover{
+opacity:0.9;
+transform:translateY(-2px);
+}
+
+button:disabled{
+opacity:0.5;
+cursor:not-allowed;
+}
+
+.code-box{
+margin-top:20px;
+padding:20px;
+background:#f0f9ff;
+border-radius:12px;
+border:2px solid #bfdbfe;
+display:none;
+}
+
+.code-box.show{
+display:block;
+animation:slideDown 0.3s ease;
+}
+
+@keyframes slideDown{
+from{opacity:0;max-height:0;}
+to{opacity:1;max-height:500px;}
+}
+
+.code-display{
+background:white;
+padding:15px;
+border-radius:8px;
+border:2px dashed #2563eb;
+font-family:'Courier New',monospace;
+font-size:18px;
+font-weight:700;
+letter-spacing:2px;
+color:#2563eb;
+text-align:center;
+margin:10px 0;
+word-break:break-all;
+}
+
+.copy-btn-small{
+background:#10b981;
+color:white;
+border:none;
+padding:8px 16px;
+border-radius:8px;
+cursor:pointer;
+font-size:14px;
+font-weight:600;
+transition:0.3s;
+}
+
+.copy-btn-small:hover{
+background:#059669;
+}
+
+.copy-btn-small.copied{
+background:#059669;
+}
+
+.file-info{
+background:#ecfdf5;
+padding:15px;
+border-radius:8px;
+margin-top:10px;
+border-left:4px solid #10b981;
+}
+
+.file-info-item{
+font-size:14px;
+color:#065f46;
+margin:5px 0;
+}
+
+.success-message{
+background:#dcfce7;
+color:#15803d;
+padding:15px;
+border-radius:8px;
+margin-top:15px;
+display:none;
+}
+
+.success-message.show{
+display:block;
+animation:slideDown 0.3s ease;
+}
+
+.back-link{
+display:inline-block;
+margin-top:20px;
+text-decoration:none;
+color:#2563eb;
+font-weight:600;
+}
+
+.back-link:hover{
+text-decoration:underline;
+}
+
+.info-box{
+background:#fef3c7;
+border:2px solid #fcd34d;
+padding:15px;
+border-radius:12px;
+margin-bottom:20px;
+font-size:14px;
+color:#92400e;
+}
+
+.info-box strong{
+color:#b45309;
+}
+
+.spinner{
+width:20px;
+height:20px;
+border:3px solid #e5e7eb;
+border-top-color:#2563eb;
+border-radius:50%;
+animation:spin 1s linear infinite;
+display:inline-block;
+margin-right:8px;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🔐 File Transfer</h1>
+<p>Share and receive files instantly</p>
+</div>
+
+<!-- Tab Navigation -->
+<div class="tabs">
+<button class="tab active" onclick="switchTab('upload')">📤 Upload & Share</button>
+<button class="tab" onclick="switchTab('receive')">📥 Receive File</button>
+<button class="tab" onclick="switchTab('quicker')">⚡ Retrieve from Quicker</button>
+</div>
+
+<!-- TAB 1: Upload & Share -->
+
+<div id="upload" class="tab-content active">
+<div class="box">
+<h2>Upload File to Share</h2>
+
+<div class="form-group">
+<label for="uploadFile">Select file to share:</label>
+<input type="file" id="uploadFile">
+</div>
+
+<button id="uploadBtn" onclick="uploadFile()">Generate Sharing Code</button>
+
+<div class="code-box" id="uploadCodeBox">
+<div style="text-align:center;">
+<p style="color:#6b7280;margin-bottom:10px;font-size:14px;">✅ File is ready to share</p>
+<div class="code-display" id="generatedCode"></div>
+<button class="copy-btn-small" onclick="copyCode('generatedCode')">📋 Copy Code</button>
+</div>
+<p style="font-size:14px;color:#6b7280;margin-top:15px;text-align:center;">
+Share this code with others. They can use it in the "Receive File" tab to download your file.
+</p>
+</div>
+</div>
+</div>
+
+<!-- TAB 2: Receive File -->
+<div id="receive" class="tab-content">
+<div class="box">
+<h2>Receive Shared File</h2>
+
+<div class="info-box">
+ℹ️ <strong>Paste the code</strong> you received from the sender to download the file.
+</div>
+
+<div class="form-group">
+<label for="receiveCode">Enter Access Code:</label>
+<input type="text" id="receiveCode" placeholder="e.g., ABC123XYZ" maxlength="10">
+</div>
+
+<button id="receiveBtn" onclick="receiveFile()">Download File</button>
+
+<div class="file-info" id="fileInfo" style="display:none;margin-top:20px;">
+<div class="file-info-item">📄 <strong>File Name:</strong> <span id="fileNameDisplay"></span></div>
+<div class="file-info-item">✏️ <strong>Type:</strong> <span id="fileTypeDisplay"></span></div>
+</div>
+
+<div class="success-message" id="successMessage">
+✅ File downloaded successfully!
+</div>
+</div>
+</div>
+
+<!-- TAB 3: Retrieve from Quicker -->
+<div id="quicker" class="tab-content">
+<div class="box">
+<h2>Retrieve Converted File from Quicker</h2>
+
+<div class="info-box">
+⚡ <strong>Paste the Quicker code</strong> you received to download the converted file. These codes are generated when using the "Quicker" conversion tool.
+</div>
+
+<div class="form-group">
+<label for="quickerCode">Enter Quicker Code:</label>
+<input type="text" id="quickerCode" placeholder="e.g., A2B3C4D5E6" maxlength="10">
+</div>
+
+<button id="quickerBtn" onclick="retrieveQuickerFile()">Retrieve & Download</button>
+
+<div class="file-info" id="quickerFileInfo" style="display:none;margin-top:20px;">
+<div class="file-info-item">📄 <strong>File Name:</strong> <span id="quickerFileNameDisplay"></span></div>
+<div class="file-info-item">🔄 <strong>Conversion Type:</strong> <span id="quickerConversionDisplay"></span></div>
+<div class="file-info-item">📅 <strong>Created:</strong> <span id="quickerCreatedDisplay"></span></div>
+</div>
+
+<div class="success-message" id="quickerSuccessMessage">
+✅ File retrieved and downloaded successfully!
+</div>
+</div>
+</div>
+
+<div style="text-align:center;margin-top:40px;">
+<a href="index.html" class="back-link">⬅ Back to Home</a>
+</div>
+
+</div>
+
+<script>
+let fileStorage = {};
+
+function switchTab(tabName) {
+  // Hide all tabs
+  document.querySelectorAll('.tab-content').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+
+  // Show selected tab
+  document.getElementById(tabName).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function uploadFile() {
+  const file = document.getElementById("uploadFile").files[0];
+  if (!file) {
+    alert("Please select a file");
+    return;
+  }
+
+  const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+  fileStorage[code] = file;
+
+  document.getElementById("generatedCode").textContent = code;
+  document.getElementById("uploadCodeBox").classList.add('show');
+}
+
+function receiveFile() {
+  const code = document.getElementById("receiveCode").value.toUpperCase().trim();
+
+  if (!code) {
+    alert("Please enter a code");
+    return;
+  }
+
+  const file = fileStorage[code];
+
+  if (file) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(file);
+    link.download = file.name;
+    link.click();
+
+    document.getElementById("fileNameDisplay").textContent = file.name;
+    document.getElementById("fileTypeDisplay").textContent = file.type || 'Unknown';
+    document.getElementById("fileInfo").style.display = 'block';
+    document.getElementById("successMessage").classList.add('show');
+
+    setTimeout(() => {
+      document.getElementById("successMessage").classList.remove('show');
+    }, 3000);
+  } else {
+    alert("Invalid Code! File not found. Make sure the code is correct.");
+  }
+}
+
+async function retrieveQuickerFile() {
+  const code = document.getElementById("quickerCode").value.toUpperCase().trim();
+
+  if (!code) {
+    alert("Please enter a code");
+    return;
+  }
+
+  const btn = document.getElementById("quickerBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Retrieving...';
+
+  try {
+    // First get file info
+    const infoResponse = await fetch(`/api/file-info/${code}`);
+    const infoData = await infoResponse.json();
+
+    if (!infoData.success) {
+      alert("Code not found or expired! Check the code and try again.");
+      btn.disabled = false;
+      btn.innerHTML = 'Retrieve & Download';
+      return;
+    }
+
+    // Display file info
+    document.getElementById("quickerFileNameDisplay").textContent = infoData.fileName;
+    document.getElementById("quickerConversionDisplay").textContent = infoData.conversionType;
+    document.getElementById("quickerCreatedDisplay").textContent = new Date(infoData.createdAt).toLocaleString();
+    document.getElementById("quickerFileInfo").style.display = 'block';
+
+    // Download the file
+    const downloadResponse = await fetch(`/api/retrieve-file/${code}`);
+    const blob = await downloadResponse.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = infoData.fileName;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+
+    document.getElementById("quickerSuccessMessage").classList.add('show');
+    setTimeout(() => {
+      document.getElementById("quickerSuccessMessage").classList.remove('show');
+    }, 3000);
+
+  } catch (err) {
+    console.error('Error:', err);
+    alert('Error retrieving file: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Retrieve & Download';
+  }
+}
+
+function copyCode(elementId) {
+  const code = document.getElementById(elementId).textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy Code';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>
