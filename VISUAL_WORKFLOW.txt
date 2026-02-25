@@ -1,0 +1,459 @@
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                    🚀 SWIFTSHARE - COMPLETE WORKFLOW 🚀                   ║
+║                                                                            ║
+║                   Modern File Transfer & Conversion Platform              ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                          🎯 SYSTEM OVERVIEW                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    Technology Stack:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Frontend:  HTML5, CSS3, JavaScript (Vanilla)              │
+    │  Backend:   Node.js + Express.js                           │
+    │  Upload:    Multer (File handling)                         │
+    │  Database:  JSON Files (users.json, files.json)            │
+    │  Storage:   Local Filesystem (uploads/)                    │
+    │  Port:      3000                                           │
+    └─────────────────────────────────────────────────────────────┘
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                       📊 USER JOURNEY FLOWCHART                         ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+                           ┌─────────────────┐
+                           │ Visit Homepage  │
+                           │  index.html     │
+                           └────────┬────────┘
+                                    │
+                    ┌───────────────┼───────────────┐
+                    │               │               │
+            ┌───────▼────────┐   ┌─▼──────────┐   │
+            │ Quick Access   │   │ Premium    │   │
+            │ (Email + Name) │   │ Login      │   │
+            │                │   │            │   │
+            │ POST /api/     │   │ POST /api/ │   │
+            │ login-free     │   │ login      │   │
+            └───────┬────────┘   └─────┬──────┘   │
+                    │                  │          │
+                    └──────────┬───────┘          │
+                               │                 │
+                    ┌─────────▼─────────┐        │
+                    │  landing.html     │◄───────┘ (Anonymous)
+                    │  🎉 Dashboard     │──────────►
+                    └────────┬──────────┘   transfer.html
+                             │
+        ┌────────────────────┼────────────────────┐
+        │                    │                    │
+    ┌───▼────┐           ┌───▼────┐          ┌───▼────┐
+    │ 📤     │           │ 🔄     │          │ 🗜️     │
+    │Transfer│           │Convert │          │Quicker │
+    │        │           │        │          │        │
+    │ Code   │           │ Direct │          │ Code   │
+    │ Based  │           │ Download          │ Based  │
+    └────────┘           └────────┘          └────────┘
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                    📤 FEATURE 1: FILE TRANSFER                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    SENDER WORKFLOW:
+    ┌─────────────────────────────────────────────────────────────┐
+    │ 1️⃣  Open Transfer Page                                      │
+    │ 2️⃣  Drag & Drop Files OR Browse                             │
+    │ 3️⃣  Configure Transfer:                                      │
+    │     • Expiration (24h / 7d / Permanent)                    │
+    │     • Allow Multiple Downloads (Yes/No)                    │
+    │     • Add Password (Optional)                              │
+    │ 4️⃣  Click "Upload & Share"                                  │
+    │ 5️⃣  ✨ Magical Code Generated: ABC123XYZ9  ✨              │
+    │ 6️⃣  📋 Copy to Clipboard                                    │
+    │ 7️⃣  🔗 Share Code with Anyone                              │
+    └─────────────────────────────────────────────────────────────┘
+                              ↓
+                    Backend Processing:
+                    POST /api/transfer
+                              ↓
+                    ├─ Receive File
+                    ├─ Generate Code
+                    ├─ Save to uploads/
+                    ├─ Store Metadata
+                    └─ Return Code
+                              ↓
+    ┌─────────────────────────────────────────────────────────────┐
+    │ RECIPIENT WORKFLOW:                                         │
+    │                                                             │
+    │ 1️⃣  Visit CloudShare                                        │
+    │ 2️⃣  Open Transfer Page                                      │
+    │ 3️⃣  Enter Code: ABC123XYZ9                                  │
+    │ 4️⃣  View File Preview                                       │
+    │     • File Name                                            │
+    │     • File Size                                            │
+    │     • Upload Time                                          │
+    │ 5️⃣  Click "Download" ⬇️                                     │
+    │ 6️⃣  🎉 File Downloaded Successfully!  🎉                  │
+    └─────────────────────────────────────────────────────────────┘
+                              ↓
+                    Backend Processing:
+                    GET /api/file-info/ABC123XYZ9
+                    GET /api/retrieve-file/ABC123XYZ9
+                              ↓
+                    ├─ Check File Exists
+                    ├─ Verify Not Expired
+                    ├─ Get File Metadata
+                    ├─ Stream File
+                    └─ Update Download Count
+
+    💾 Storage Details:
+       • Location: /uploads/
+       • Naming: [CODE].pdf (or respective extension)
+       • Expiration: 7 days (Auto cleanup)
+       • Max Size: 50 MB
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                  🔄 FEATURE 2: FILE CONVERTER                           ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    STEP 1: Choose Format
+    ┌─────────────────────────────────────────────────────────────┐
+    │ Available Conversions:                                      │
+    │ • PDF  ↔  Word, Excel, PPT, JPG, PNG, TXT, HTML           │
+    │ • Word ↔  PDF                                              │
+    │ • Excel ↔ PDF                                              │
+    │ • GPT  ↔  PDF                                              │
+    │ • Image ↔ PDF                                              │
+    │                                                             │
+    │ 20+ Format Combinations Available                          │
+    └─────────────────────────────────────────────────────────────┘
+                              ↓
+    STEP 2: Upload File
+    ┌─────────────────────────────────────────────────────────────┐
+    │ • Drag & Drop Support                                       │
+    │ • File Browser                                              │
+    │ • Max Size: 50 MB                                           │
+    │ • Shows: File Name, Size, Type                             │
+    └─────────────────────────────────────────────────────────────┘
+                              ↓
+    STEP 3: Convert & Download
+    ┌─────────────────────────────────────────────────────────────┐
+    │ Backend: POST /api/convert                                  │
+    │ • Process File                                              │
+    │ • Convert Format                                            │
+    │ • Instant Download ⬇️                                       │
+    │ • Automatic Cleanup                                         │
+    └─────────────────────────────────────────────────────────────┘
+
+    💡 Special Features:
+       ✅ Direct Download (No code needed)
+       ✅ Instant Processing
+       ✅ No Account Required
+       ✅ Anonymous Usage Supported
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                   🗜️  FEATURE 3: QUICKER (COMPRESSION)                ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    STEP 1: Select Compression Type
+    ┌─────────────────────────────────────────────────────────────┐
+    │ • Standard Compression                                      │
+    │ • High Compression                                          │
+    │ • Format Conversion + Compression                           │
+    └─────────────────────────────────────────────────────────────┘
+                              ↓
+    STEP 2: Upload File
+    ┌─────────────────────────────────────────────────────────────┐
+    │ • Same as Converter                                         │
+    │ • Max Size: 50 MB                                           │
+    └─────────────────────────────────────────────────────────────┘
+                              ↓
+    STEP 3: Generate Code & Share
+    ┌─────────────────────────────────────────────────────────────┐
+    │ Backend: POST /api/quicker-convert                          │
+    │ • Process Compression                                       │
+    │ • Generate Code: QKL987ABC2                                │
+    │ • Create .zip File                                          │
+    │ • Store Metadata                                            │
+    │                                                             │
+    │ Options:                                                    │
+    │ 1️⃣  Download My File ⬇️                                     │
+    │ 2️⃣  Share Code 🔗                                          │
+    │ 3️⃣  Copy Code 📋                                            │
+    └─────────────────────────────────────────────────────────────┘
+
+    💾 Output Details:
+       • Format: .zip or converted format
+       • Size Reduction: Up to 80%
+       • Expiration: 7 days
+       • Sharing: Via unique code
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                        🔌 API ENDPOINTS (9 Total)                       ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    🔐 AUTHENTICATION (2 Endpoints)
+    ├─ POST /api/login-free
+    │  Request: { email, name }
+    │  Response: { success, user }
+    │
+    └─ POST /api/login
+       Request: { email, password }
+       Response: { success, user }
+
+    📤 FILE TRANSFER (3 Endpoints)
+    ├─ POST /api/transfer
+    │  Request: multipart/formdata { file, expiration }
+    │  Response: { success, code, fileName }
+    │
+    ├─ GET /api/file-info/:code
+    │  Response: { fileName, size, type, createdAt }
+    │
+    └─ GET /api/retrieve-file/:code
+       Response: File Download Stream
+
+    🔄 FILE CONVERSION (2 Endpoints)
+    ├─ POST /api/convert
+    │  Request: multipart/formdata { file, conversionType }
+    │  Response: Direct File Download
+    │
+    └─ POST /api/quicker-convert
+       Request: multipart/formdata { file, conversionType }
+       Response: { success, code, fileName }
+
+    🗜️  COMPRESSION (1 Endpoint)
+    └─ POST /api/compress
+       Request: multipart/formdata { file }
+       Response: { success, code, fileName }
+
+    👤 USER INFO (1 Endpoint)
+    └─ GET /api/user/:email
+       Response: { success, user }
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                        💾 DATABASE STRUCTURE                            ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    📄 users.json
+    ├─ email: "john@example.com"
+    ├─ name: "John Doe"
+    ├─ mode: "free" | "premium"
+    ├─ password: "hashed_hash_here"
+    ├─ accessToken: "random_hex"
+    └─ createdAt: "2026-02-19T10:00:00Z"
+
+    📄 files.json
+    ├─ [CODE] {
+    │  ├─ filePath: "C:/uploads/CODE.pdf"
+    │  ├─ fileName: "document.pdf"
+    │  ├─ originalFileName: "my_doc.pdf"
+    │  ├─ conversionType: "Transfer" | "PDF to Word" | "Compression"
+    │  ├─ fileSize: 1024000
+    │  ├─ userEmail: "john@example.com"
+    │  ├─ createdAt: "2026-02-19T10:30:00Z"
+    │  ├─ expiresAt: "2026-02-26T10:30:00Z"
+    │  └─ isPublic: true
+    └─ }
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                         🎨 FRONTEND PAGES                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    📄 index.html (Home Page)
+    ├─ Hero Section
+    ├─ Feature Cards (Transfer, Converter, Quicker)
+    ├─ Login Modal (Free & Premium)
+    ├─ Navigation & Footer
+    └─ Beautiful Gradient Design
+
+    📄 landing.html (Dashboard)
+    ├─ Personalized Welcome
+    ├─ User Statistics
+    ├─ Quick Links to All Features
+    ├─ Recent Activity
+    └─ Navigation with Logout
+
+    📄 transfer.html
+    ├─ File Upload (Drag & Drop)
+    ├─ Transfer Configuration
+    ├─ Code Display & Copy
+    ├─ Share Options
+    └─ History
+
+    📄 convert.html
+    ├─ Format Selection Grid
+    ├─ Modal-based File Upload
+    ├─ Conversion Options
+    ├─ Download Status
+    └─ Multiple Conversions
+
+    📄 compress.html (Quicker)
+    ├─ Step Indicator (Visual Progress)
+    ├─ Format Selection
+    ├─ File Upload with Preview
+    ├─ Compression Progress
+    ├─ Code Generation
+    ├─ Share & Download Options
+    └─ Start Again Button
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                         ⚙️  BACKEND FEATURES                            ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    🔧 Multer Configuration
+    ├─ Destination: ./uploads
+    ├─ Max File Size: 50 MB
+    ├─ Multiple Files: Supported
+    └─ Validation: File type checking
+
+    🎲 Code Generator
+    ├─ Length: 10 characters
+    ├─ Format: Alphanumeric + Uppercase
+    ├─ Uniqueness: Guaranteed
+    └─ Example: ABC123XYZ9
+
+    📋 File Extension Mapper
+    ├─ Supports 20+ conversion types
+    ├─ Automatic extension assignment
+    ├─ Fallback: .out
+    └─ Case-insensitive handling
+
+    🧹 Auto Cleanup Service
+    ├─ Runs: Every 1 hour
+    ├─ Checks: File expiration
+    ├─ Deletes: Expired files
+    ├─ Updates: Database
+    └─ Logs: Cleanup activities
+
+    🔒 Security Features
+    ├─ SHA-256 Password Hashing
+    ├─ Random Token Generation
+    ├─ File Path Validation
+    ├─ Error Handling
+    └─ CORS Support (Optional)
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                        ✨ KEY FEATURES SUMMARY                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    ✅ No Account Required
+       • Anonymous access
+       • Quick access mode
+       • Premium account optional
+
+    ✅ Unique Code System
+       • 10-character codes
+       • Easy to remember
+       • Secure sharing
+
+    ✅ Multiple Features
+       • File Transfer
+       • Format Conversion
+       • File Compression
+
+    ✅ Smart Storage
+       • Automatic cleanup
+       • 7-day expiration
+       • Space efficient
+
+    ✅ Privacy-Focused
+       • End-to-end sharing
+       • No forced login
+       • Anonymous receipts
+
+    ✅ Fast & Reliable
+       • Instant downloads
+       • Error handling
+       • Retry logic
+
+    ✅ Beautiful UI
+       • Modern design
+       • Glassmorphism
+       • Responsive layout
+       • Dark/Light ready
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                     📈 FILE LIFECYCLE (7 DAYS)                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    DAY 0 (Upload)
+    │
+    ├─ File uploaded by user
+    ├─ Unique code generated
+    ├─ Metadata stored in files.json
+    ├─ File stored in uploads/ folder
+    └─ User receives code
+
+                  ⏳ DAYS 1-6 (Active)
+                  │
+                  ├─ File available for download
+                  ├─ Code remains valid
+                  ├─ Metadata accessible
+                  └─ Multiple downloads allowed
+
+                              DAY 7 (Expiration)
+                              │
+                              ├─ Auto cleanup service runs
+                              ├─ File is deleted from uploads/
+                              ├─ Metadata removed from files.json
+                              ├─ Code becomes invalid
+                              └─ Download attempts fail
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                        🚀 QUICK START COMMANDS                          ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    1. Install Dependencies
+       $ npm install
+
+    2. Start Server
+       $ npm start
+       or
+       $ node server.js
+
+    3. Open Browser
+       http://localhost:3000
+
+    4. Done! 🎉
+       Start using SwiftShare
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                          📞 PROJECT INFO                                ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+    Project Name:    SwiftShare
+    Version:         1.0.0
+    Author:          Abhilash
+    Status:          ✅ Production Ready
+    Created:         February 19, 2026
+    License:         MIT
+
+    Repository:      /Desktop/Swiftshare/
+    Main Server:     server.js
+    Frontend:        Swiftshare/
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                   🎊 Thank you for using SwiftShare! 🎊                   ║
+║                                                                            ║
+║              For issues or questions, check the documentation             ║
+║                    Ready to Transform Your Files? 🚀                      ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+

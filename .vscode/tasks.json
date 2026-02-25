@@ -1,0 +1,10 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Check Backend Errors",
+			"type": "shell",
+			"command": "cd 'c:\\Users\\devar\\OneDrive\\Desktop\\Swiftshare' && node -c server.js"
+		}
+	]
+}

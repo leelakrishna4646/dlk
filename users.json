@@ -1,0 +1,30 @@
+[
+  {
+    "email": "originalgangstar452@gmail.com",
+    "password": "fa65f5978c15c2b769d910e4767f2d7e66a03041b6f9c3b600cb8417875313a4",
+    "mode": "premium",
+    "createdAt": "2026-02-19T09:03:45.407Z",
+    "accessToken": "d205d932edc130a4e014324626cc27a0"
+  },
+  {
+    "email": "originalgangstar452@gmail.co",
+    "password": "fa65f5978c15c2b769d910e4767f2d7e66a03041b6f9c3b600cb8417875313a4",
+    "mode": "premium",
+    "createdAt": "2026-02-19T09:07:40.967Z",
+    "accessToken": "b876114592483b67ace5a1dab9622b67"
+  },
+  {
+    "email": "dlk@123",
+    "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+    "mode": "premium",
+    "createdAt": "2026-02-19T09:13:23.213Z",
+    "accessToken": "4ac2d5043d3f48a6f610d65d0abf6713"
+  },
+  {
+    "email": "123@gmail.com",
+    "password": "f1e7fb0aa96dfac4d5e242cfa483bba45ab38349c142985fe7f994e2f03266d9",
+    "mode": "premium",
+    "createdAt": "2026-02-19T09:14:10.257Z",
+    "accessToken": "9ba22c240ebab754382be530187c16af"
+  }
+]
